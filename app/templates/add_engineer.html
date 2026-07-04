@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-white">
+                <i class="bi bi-person-plus-fill text-primary"></i>
+                Add New Engineer
+            </h2>
+            <p class="text-secondary mb-0">
+                Create a new engineer profile.
+            </p>
+        </div>
+    </div>
+
+    {% if error %}
+    <div class="alert alert-danger">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form action="{{ url_for('main.add_engineer') }}" method="POST" enctype="multipart/form-data">
+        <!-- Profile Image Selection -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-image text-primary"></i>
+                    Profile Picture
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-0">
+                    <label class="form-label">Upload Profile Image</label>
+                    <input type="file" name="profile_image" class="form-control" accept="image/*">
+                    <div class="form-text text-secondary">Accepted formats: JPG, PNG. Leave empty to use default photo.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Basic Information -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-person-fill text-info"></i>
+                    Basic Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Employee ID</label>
+                        <input type="text" name="employee_id" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" name="full_name" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="text" name="phone" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Information -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-briefcase-fill text-success"></i>
+                    Job Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Company</label>
+                        <input type="text" name="company" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Department</label>
+                        <input type="text" name="department" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Position</label>
+                        <input type="text" name="position" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Supervisor</label>
+                        <input type="text" name="supervisor" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Field Information -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-geo-alt-fill text-warning"></i>
+                    Field Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Field</label>
+                        <input type="text" name="field_name" class="form-control">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Location</label>
+                        <input type="text" name="location" class="form-control">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Rotation</label>
+                        <select name="rotation" class="form-select">
+                            <option value="">Select Rotation</option>
+                            <option>14/14</option>
+                            <option>21/21</option>
+                            <option>28/28</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-activity text-danger"></i>
+                    Current Status
+                </h5>
+            </div>
+            <div class="card-body">
+                <select name="current_status" class="form-select">
+                    <option value="Off Site">Off Site</option>
+                    <option value="On Site">On Site</option>
+                    <option value="Leave">Leave</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="text-end">
+            <a href="/engineers" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-floppy-fill"></i> Save Engineer
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

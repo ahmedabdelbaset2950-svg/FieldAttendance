@@ -1,0 +1,316 @@
+/* ===================================================
+   FIELD ATTENDANCE SYSTEM
+   Professional Dark Theme
+=================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+
+    background:#0b1120;
+
+    color:#fff;
+
+}
+
+/* ================= LOGIN ================= */
+
+.login-page{
+
+    min-height:100vh;
+
+    background:
+    linear-gradient(135deg,#07111f,#0f172a,#1e3a8a);
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.login-overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+    radial-gradient(circle at top right,
+    rgba(37,99,235,.25),
+    transparent 40%);
+
+}
+
+/* ================= CARD ================= */
+
+.login-card{
+
+    position:relative;
+
+    z-index:2;
+
+    padding:45px;
+
+    border-radius:24px;
+
+    background:rgba(17,24,39,.82);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+
+    0 30px 60px rgba(0,0,0,.45);
+
+    animation:fadeUp .7s ease;
+
+}
+
+/* ================= LOGO ================= */
+
+.login-logo{
+
+    width:90px;
+
+    height:90px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:linear-gradient(135deg,#2563eb,#38bdf8);
+
+    font-size:40px;
+
+    color:white;
+
+    box-shadow:0 10px 30px rgba(37,99,235,.5);
+
+}
+
+/* ================= INPUT ================= */
+
+.input-group-text{
+
+    background:#111827;
+
+    border:1px solid #374151;
+
+    color:#38bdf8;
+
+}
+
+.form-control{
+
+    background:#111827;
+
+    border:1px solid #374151;
+
+    color:white;
+
+    height:52px;
+
+}
+
+.form-control::placeholder{
+
+    color:#94a3b8;
+
+}
+
+.form-control:focus{
+
+    background:#111827;
+
+    color:white;
+
+    border-color:#2563eb;
+
+    box-shadow:0 0 0 .2rem rgba(37,99,235,.25);
+
+}
+
+/* ================= BUTTON ================= */
+
+.login-btn{
+
+    height:55px;
+
+    border-radius:14px;
+
+    font-weight:600;
+
+    font-size:17px;
+
+    background:linear-gradient(90deg,#2563eb,#3b82f6);
+
+    border:none;
+
+    transition:.3s;
+
+}
+
+.login-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 12px 25px rgba(37,99,235,.35);
+
+}
+
+/* ================= ALERT ================= */
+
+.alert{
+
+    border-radius:12px;
+
+}
+
+/* ================= ANIMATION ================= */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(35px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+/* =====================================
+   Sidebar
+===================================== */
+
+.sidebar{
+
+    min-height:100vh;
+
+    background:#111827;
+
+    padding:25px;
+
+    border-right:1px solid #1f2937;
+
+}
+
+.sidebar .logo{
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+}
+
+.sidebar .logo h3{
+
+    color:#38bdf8;
+
+    font-weight:700;
+
+}
+
+.sidebar .logo small{
+
+    color:#94a3b8;
+
+}
+
+.sidebar a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    text-decoration:none;
+
+    color:#cbd5e1;
+
+    padding:14px 18px;
+
+    margin-bottom:8px;
+
+    border-radius:12px;
+
+    transition:.3s;
+
+    font-size:15px;
+
+    font-weight:500;
+
+}
+
+.sidebar a:hover{
+
+    background:#2563eb;
+
+    color:white;
+
+    transform:translateX(8px);
+
+}
+
+.sidebar a i{
+
+    font-size:18px;
+
+    width:25px;
+
+}
+
+/* ============================= */
+
+.content-area{
+
+    padding:30px;
+
+}
+
+/* ============================= */
+
+.dashboard-card{
+
+    background:#111827;
+
+    border:none;
+
+    border-radius:18px;
+
+    transition:.3s;
+
+    color:white;
+
+}
+
+.dashboard-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 15px 35px rgba(0,0,0,.35);
+
+}

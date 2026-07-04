@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold">
+            <i class="bi bi-speedometer2 text-info"></i>
+            Dashboard
+        </h2>
+        <p class="text-secondary mb-0">
+            Welcome back,
+            <span class="text-info">{{ current_user.full_name }}</span>
+        </p>
+    </div>
+
+    <div class="text-end">
+        <h5 class="text-info mb-0">
+            {{ current_user.role }}
+        </h5>
+        <small class="text-secondary">
+            Field Attendance System
+        </small>
+    </div>
+</div>
+
+    <!-- Statistics -->
+    <div class="row g-4">
+        <div class="col-lg-3 col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-body">
+                    <small class="text-secondary">Total Engineers</small>
+                    <h2 class="fw-bold mt-2">{{ total_engineers }}</h2>
+                    <i class="bi bi-people-fill display-5 text-primary"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-body">
+                    <small class="text-secondary">On Site</small>
+                    <h2 class="fw-bold text-success mt-2">{{ on_site }}</h2>
+                    <i class="bi bi-check-circle-fill display-5 text-success"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-body">
+                    <small class="text-secondary">Off Site</small>
+                    <h2 class="fw-bold text-warning mt-2">{{ off_site }}</h2>
+                    <i class="bi bi-house-fill display-5 text-warning"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-body">
+                    <small class="text-secondary">Leave</small>
+                    <h2 class="fw-bold text-info mt-2">{{ leave }}</h2>
+                    <i class="bi bi-airplane-fill display-5 text-info"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts & Sidebar Row -->
+    <div class="row mt-4">
+        <!-- Chart Column -->
+        <div class="col-lg-8">
+            <div class="card dashboard-card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-pie-chart-fill text-info"></i>
+                        Attendance Overview
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div style="height:300px;">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Column -->
+        <div class="col-lg-4">
+            <!-- Alerts Card -->
+            <div class="card dashboard-card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+                        Shift Alerts
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span>Warning</span>
+                        <span class="badge bg-warning text-dark fs-6">{{ warning }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Extended</span>
+                        <span class="badge bg-danger fs-6">{{ extended }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Card -->
+            <div class="card dashboard-card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-lightning-fill text-info"></i>
+                        Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body d-grid gap-3">
+                    <a href="/add_engineer" class="btn btn-primary">
+                        <i class="bi bi-person-plus-fill"></i> Add Engineer
+                    </a>
+                    <a href="/engineers" class="btn btn-success">
+                        <i class="bi bi-people-fill"></i> Engineers
+                    </a>
+                    <a href="/movements" class="btn btn-warning">
+                        <i class="bi bi-clock-history"></i> Movement History
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Movements -->
+    <div class="card dashboard-card mt-4">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="bi bi-clock-history text-info"></i>
+                Recent Movements
+            </h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Engineer</th>
+                        <th>Action</th>
+                        <th>Reason</th>
+                        <th>Days</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for movement in recent_movements %}
+                    <tr>
+                        <td>{{ movement.movement_date }}</td>
+                        <td>{{ movement.engineer.full_name }}</td>
+                        <td>
+                            {% if movement.action == "Check In" %}
+                            <span class="badge bg-success">Check In</span>
+                            {% else %}
+                            <span class="badge bg-danger">Check Out</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ movement.reason or "-" }}</td>
+                        <td>{{ movement.days_on_site or "-" }}</td>
+                    </tr>
+                    {% endfor %}
+                    
+                    {% if recent_movements|length == 0 %}
+                    <tr>
+                        <td colspan="5" class="text-center text-secondary py-4">
+                            No movement history found.
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Dashboard Chart Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const ctx = document.getElementById("statusChart");
+    if (ctx) {
+        new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels: ["On Site", "Off Site", "Leave"],
+                datasets: [{
+                    data: [
+                        {{ on_site }},
+                        {{ off_site }},
+                        {{ leave }}
+                    ],
+                    backgroundColor: [
+                        "#198754", // Success (Green)
+                        "#ffc107", // Warning (Yellow)
+                        "#0dcaf0"  // Info (Cyan)
+                    ],
+                    borderColor: "#0b1120",
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: "bottom",
+                        labels: {
+                            color: "#ffffff",
+                            padding: 20,
+                            font: {
+                                size: 13
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-white mb-4"><i class="bi bi-archive-fill text-info"></i> Archive - Select Year</h2>
+    <div class="row">
+        {% for year_data in years %}
+        <div class="col-md-3">
+            <a href="{{ url_for('main.archive_year', year=year_data.year) }}" class="text-decoration-none">
+                <div class="card bg-dark text-white shadow p-4 text-center mb-3 border-info">
+                    <h3 class="fw-bold">{{ year_data.year }}</h3>
+                    <small class="text-secondary">View Attendance</small>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

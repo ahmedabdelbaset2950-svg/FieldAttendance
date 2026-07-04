@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2>إضافة مستخدم جديد</h2>
+    <form method="POST" class="mt-4">
+        <div class="mb-3">
+            <label>الاسم الكامل</label>
+            <input type="text" name="full_name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>اسم المستخدم</label>
+            <input type="text" name="username" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>كلمة المرور</label>
+            <input type="password" name="password" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>الصلاحية</label>
+            <select name="role" class="form-control">
+                <option value="Viewer">Viewer</option>
+                <option value="Manager">Manager</option>
+                <option value="Admin">Admin</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">إنشاء الحساب</button>
+    </form>
+</div>
+{% endblock %}

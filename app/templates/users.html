@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">إدارة صلاحيات المستخدمين</h2>
+    
+    <!-- زر إضافة مستخدم جديد -->
+    <a href="{{ url_for('main.add_user') }}" class="btn btn-success mb-3">
+        <i class="bi bi-plus-circle"></i> إضافة مستخدم جديد
+    </a>
+
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>الاسم الكامل</th>
+                <th>اسم المستخدم</th>
+                <th>الصلاحية الحالية</th>
+                <th>تعديل الصلاحية</th>
+                <th>الإجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in users %}
+            <tr>
+                <td>{{ u.full_name }}</td>
+                <td>{{ u.username }}</td>
+                <td>
+                    <span class="badge {% if u.role == 'Admin' %}bg-danger{% elif u.role == 'Manager' %}bg-success{% else %}bg-info{% endif %}">
+                        {{ u.role }}
+                    </span>
+                </td>
+                <td>
+                    <form action="{{ url_for('main.update_role', user_id=u.id) }}" method="POST" class="d-flex">
+                        <select name="role" class="form-select form-select-sm me-2" style="width: auto;">
+                            <option value="Viewer" {% if u.role == 'Viewer' %}selected{% endif %}>Viewer</option>
+                            <option value="Manager" {% if u.role == 'Manager' %}selected{% endif %}>Manager</option>
+                            <option value="Admin" {% if u.role == 'Admin' %}selected{% endif %}>Admin</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-primary">حفظ</button>
+                    </form>
+                </td>
+                <td>
+                    <div class="d-flex">
+                        <!-- زر التعديل -->
+                        <a href="{{ url_for('main.edit_user', user_id=u.id) }}" class="btn btn-sm btn-warning me-2">
+                            <i class="bi bi-pencil-fill"></i> تعديل
+                        </a>
+                        
+                        <!-- زر الحذف -->
+                        {% if u.id != current_user.id %}
+                            <a href="{{ url_for('main.delete_user', user_id=u.id) }}" 
+                               class="btn btn-sm btn-danger" 
+                               onclick="return confirm('هل أنت متأكد من حذف هذا المستخدم؟');">
+                               <i class="bi bi-trash-fill"></i> حذف
+                            </a>
+                        {% else %}
+                            <span class="text-muted small">لا يمكن الحذف</span>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

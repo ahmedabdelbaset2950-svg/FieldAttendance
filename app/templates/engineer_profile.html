@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">
+                <i class="bi bi-person-vcard-fill text-primary"></i>
+                Engineer Profile
+            </h2>
+            <p class="text-secondary mb-0">
+                Complete engineer information
+            </p>
+        </div>
+        <a href="/engineers" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+    </div>
+
+    <div class="row">
+        <!-- Left Side (Avatar and Status) -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <!-- عرض الصورة المرفوعة بدلاً من أول حرف -->
+                    <div class="mb-3">
+                        <img src="{{ url_for('static', filename='profile_pics/' + engineer.profile_image) }}" 
+                             class="rounded-circle border border-secondary shadow-sm" 
+                             style="width: 140px; height: 140px; object-fit: cover;">
+                    </div>
+
+                    <h3>{{ engineer.full_name }}</h3>
+                    <p class="text-secondary">{{ engineer.position }}</p>
+                    <hr>
+
+                    {% if engineer.current_status=="On Site" %}
+                    <span class="badge bg-success fs-6">On Site</span>
+                    {% elif engineer.current_status=="Off Site" %}
+                    <span class="badge bg-warning text-dark fs-6">Off Site</span>
+                    {% else %}
+                    <span class="badge bg-info fs-6">Leave</span>
+                    {% endif %}
+
+                    <div class="mt-3">
+                        <h5>{{ profile_days }} Days</h5>
+                    </div>
+
+                    {% if engineer.shift_alert=="Warning" %}
+                    <div class="alert alert-warning mt-3">⚠ Warning</div>
+                    {% elif engineer.shift_alert=="Extended" %}
+                    <div class="alert alert-danger mt-3">🔴 Extended Rotation</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side (Details and History) -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Personal Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <strong>Employee ID</strong><br>
+                            {{ engineer.employee_id }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Phone</strong><br>
+                            {{ engineer.phone or "-" }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Email</strong><br>
+                            {{ engineer.email or "-" }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Company</strong><br>
+                            {{ engineer.company or "-" }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Department</strong><br>
+                            {{ engineer.department or "-" }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Position</strong><br>
+                            {{ engineer.position }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Supervisor</strong><br>
+                            {{ engineer.supervisor or "-" }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Field</strong><br>
+                            {{ engineer.field_name or "-" }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Location</strong><br>
+                            {{ engineer.location or "-" }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Rotation</strong><br>
+                            {{ engineer.rotation or "-" }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Check In</strong><br>
+                            {{ engineer.check_in_date or "-" }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Check Out</strong><br>
+                            {{ engineer.check_out_date or "-" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Movement History -->
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="mb-0">Movement History</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Date</th>
+                                <th>Action</th>
+                                <th>Reason</th>
+                                <th>Days</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for movement in movements %}
+                            <tr>
+                                <td>{{ movement.movement_date }}</td>
+                                <td>
+                                    {% if movement.action=="Check In" %}
+                                    <span class="badge bg-success">Check In</span>
+                                    {% else %}
+                                    <span class="badge bg-danger">Check Out</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ movement.reason }}</td>
+                                <td>{{ movement.days_on_site }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

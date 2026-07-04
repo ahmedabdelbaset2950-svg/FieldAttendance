@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold text-white">
+            <i class="bi bi-people-fill text-primary"></i>
+            Engineer Management
+        </h2>
+        <small class="text-secondary">
+            Total Engineers :
+            <span class="text-info fw-bold">
+                {{ engineers|length }}
+            </span>
+        </small>
+    </div>
+    <a href="/add_engineer" class="btn btn-primary">
+        <i class="bi bi-person-plus-fill"></i> Add Engineer
+    </a>
+</div>
+
+<!-- Search -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET">
+            <div class="row">
+                <div class="col-md-10">
+                    <input
+                        type="text"
+                        name="search"
+                        class="form-control"
+                        placeholder="Search by ID, Name, Position..."
+                        value="{{ search }}">
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button class="btn btn-primary">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Engineer</th>
+                    <th>Company</th>
+                    <th>Field</th>
+                    <th>Position</th>
+                    <th>Status</th>
+                    <th>Days</th>
+                    <th>Alert</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for engineer in engineers %}
+                <tr>
+                    <td>{{ engineer.employee_id }}</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <!-- عرض الصورة الشخصية أو الدائرة الزرقاء البديلة -->
+                            {% if engineer.profile_image %}
+                            <img src="{{ url_for('static', filename='profile_pics/' + engineer.profile_image) }}" 
+                                 alt="Profile Image" 
+                                 class="rounded-circle me-3" 
+                                 style="width: 40px; height: 40px; object-fit: cover;">
+                            {% else %}
+                            <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-3" style="width:40px;height:40px;">
+                                {{ engineer.full_name[0] }}
+                            </div>
+                            {% endif %}
+                            <div>
+                                <div class="fw-bold">{{ engineer.full_name }}</div>
+                                <small class="text-secondary">{{ engineer.phone or "-" }}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ engineer.company or "-" }}</td>
+                    <td>{{ engineer.field_name or "-" }}</td>
+                    <td>{{ engineer.position }}</td>
+                    <td>
+                        {% if engineer.current_status=="On Site" %}
+                        <span class="badge bg-success">On Site</span>
+                        {% elif engineer.current_status=="Off Site" %}
+                        <span class="badge bg-warning text-dark">Off Site</span>
+                        {% else %}
+                        <span class="badge bg-info">Leave</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if calculated_days[engineer.id].days == "-" %}
+                            -
+                        {% else %}
+                            <span class="badge bg-primary mb-1">
+                                {{ calculated_days[engineer.id].days }}
+                            </span>
+                            <br>
+                            <small class="text-secondary" style="font-size: 0.75rem; block-size: auto;">
+                                {{ calculated_days[engineer.id].start_date }}
+                            </small>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if engineer.shift_alert=="Warning" %}
+                        <span class="badge bg-warning text-dark">Warning</span>
+                        {% elif engineer.shift_alert=="Extended" %}
+                        <span class="badge bg-danger">Extended</span>
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td class="text-nowrap">
+                        <!-- View Profile -->
+                        <a href="/engineer/{{ engineer.id }}" class="btn btn-info btn-sm" title="View Profile">
+                            <i class="bi bi-person-vcard-fill"></i>
+                        </a>
+
+                        <!-- Check In -->
+                        {% if engineer.current_status=="Off Site" %}
+                        <a href="/check_in/{{ engineer.id }}" class="btn btn-success btn-sm" title="Check In">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                        </a>
+                        {% endif %}
+
+                        <!-- Check Out -->
+                        {% if engineer.current_status=="On Site" %}
+                        <a href="/check_out/{{ engineer.id }}" class="btn btn-danger btn-sm" title="Check Out">
+                            <i class="bi bi-box-arrow-right"></i>
+                        </a>
+                        {% endif %}
+
+                        <!-- Edit -->
+                        <a href="/edit_engineer/{{ engineer.id }}" class="btn btn-warning btn-sm" title="Edit">
+                            <i class="bi bi-pencil-fill"></i>
+                        </a>
+
+                        <!-- Delete -->
+                        <a href="/delete_engineer/{{ engineer.id }}" class="btn btn-secondary btn-sm" onclick="return confirm('Delete this engineer?')">
+                            <i class="bi bi-trash-fill"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block login_content %}
+
+<div class="login-page">
+
+    <div class="login-overlay"></div>
+
+    <div class="container">
+
+        <div class="row justify-content-center align-items-center min-vh-100">
+
+            <div class="col-lg-5 col-md-7">
+
+                <div class="login-card">
+
+                    <div class="text-center mb-4">
+
+                        <div class="login-logo">
+
+                            <i class="bi bi-droplet-half"></i>
+
+                        </div>
+
+                        <h2 class="fw-bold text-white mt-3">
+
+                            Field Attendance System
+
+                        </h2>
+
+                        <p class="text-secondary">
+
+                            Secure Login Portal
+
+                        </p>
+
+                    </div>
+
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+
+                        {% for category, message in messages %}
+
+                        <div class="alert alert-{{ category }}">
+
+                            {{ message }}
+
+                        </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+                    {% endwith %}
+
+                    <form method="POST">
+
+                        <div class="mb-4">
+
+                            <label class="form-label text-light">
+
+                                Username
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+
+                                    <i class="bi bi-person-fill"></i>
+
+                                </span>
+
+                                <input
+                                    type="text"
+                                    name="username"
+                                    class="form-control"
+                                    placeholder="Enter Username"
+                                    required>
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label text-light">
+
+                                Password
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+
+                                    <i class="bi bi-lock-fill"></i>
+
+                                </span>
+
+                                <input
+                                    id="password"
+                                    type="password"
+                                    name="password"
+                                    class="form-control"
+                                    placeholder="Enter Password"
+                                    required>
+
+                                <button
+                                    class="btn btn-outline-secondary"
+                                    type="button"
+                                    onclick="togglePassword()">
+
+                                    <i id="eyeIcon" class="bi bi-eye-fill"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <button
+                            class="btn btn-primary login-btn w-100">
+
+                            <i class="bi bi-box-arrow-in-right"></i>
+
+                            Login
+
+                        </button>
+
+                    </form>
+
+                    <hr class="border-secondary my-4">
+
+                    <div class="text-center">
+
+                        <small class="text-secondary">
+
+                            © 2026 Ahmed Mohamed Abdel Baset
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function togglePassword(){
+
+    const password=document.getElementById("password");
+
+    const eye=document.getElementById("eyeIcon");
+
+    if(password.type==="password"){
+
+        password.type="text";
+
+        eye.className="bi bi-eye-slash-fill";
+
+    }else{
+
+        password.type="password";
+
+        eye.className="bi bi-eye-fill";
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

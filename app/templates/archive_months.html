@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-white mb-4">Archive > {{ year }} > Select Month</h2>
+    <div class="row">
+        {% for month_data in months %}
+        <div class="col-md-3">
+            <!-- نقوم بتوجيه المستخدم مباشرة لصفحة التقارير بالفلتر المطلوب -->
+            <a href="{{ url_for('main.reports', year=year, month=month_data.month) }}" class="text-decoration-none">
+                <div class="card bg-secondary text-white shadow p-3 text-center mb-3">
+                    <h4 class="m-0">Month: {{ month_data.month }}</h4>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

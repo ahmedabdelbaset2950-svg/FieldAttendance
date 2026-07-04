@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card p-4">
+        <h2>تعديل بيانات المستخدم: {{ user.full_name }}</h2>
+        <form method="POST">
+            <div class="mb-3">
+                <label>الاسم الكامل</label>
+                <input type="text" name="full_name" class="form-control" value="{{ user.full_name }}" required>
+            </div>
+            <div class="mb-3">
+                <label>اسم المستخدم</label>
+                <input type="text" name="username" class="form-control" value="{{ user.username }}" required>
+            </div>
+            <div class="mb-3">
+                <label>كلمة السر الجديدة (اتركها فارغة إذا لم ترد التغيير)</label>
+                <input type="password" name="password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+            <a href="{{ url_for('main.manage_users') }}" class="btn btn-secondary">إلغاء</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

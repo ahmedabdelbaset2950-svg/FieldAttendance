@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="fw-bold text-white">
+        <i class="bi bi-graph-up-arrow text-primary"></i> Attendance Reports
+    </h2>
+    <small class="text-secondary">Filter movements history and export sheets</small>
+</div>
+
+<!-- أدوات الفلترة -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" action="{{ url_for('main.reports') }}">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="text-secondary small mb-1">Month</label>
+                    <select name="month" class="form-select">
+                        <option value="">All Months</option>
+                        {% for i in range(1, 13) %}
+                        <option value="{{ i }}" {% if selected_month == i %}selected{% endif %}>{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="text-secondary small mb-1">Year</label>
+                    <input type="number" name="year" class="form-control" value="{{ selected_year or '2026' }}" placeholder="2026">
+                </div>
+                <div class="col-md-4">
+                    <label class="text-secondary small mb-1">Engineer</label>
+                    <select name="engineer_id" class="form-select">
+                        <option value="">All Engineers</option>
+                        {% for eng in engineers %}
+                        <option value="{{ eng.id }}" {% if selected_engineer and selected_engineer|int == eng.id %}selected{% endif %}>
+                            {{ eng.full_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2 d-grid align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-funnel-fill"></i> Filter
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- جدول عرض الحركات -->
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center bg-transparent border-secondary py-3">
+        <h5 class="mb-0 text-white">Report Results</h5>
+        <div>
+            <a href="{{ url_for('main.export_excel', engineer_id=selected_engineer, month=selected_month, year=selected_year) }}" class="btn btn-success btn-sm me-2">
+                <i class="bi bi-file-earmark-excel-fill"></i> Export Excel
+            </a>
+            <a href="{{ url_for('main.export_pdf', engineer_id=selected_engineer, month=selected_month, year=selected_year) }}" class="btn btn-danger btn-sm">
+                <i class="bi bi-file-earmark-pdf-fill"></i> Export PDF
+            </a>
+        </div>
+    </div>
+    
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th>Engineer</th>
+                        <th>Action</th>
+                        <th>Date</th>
+                        <th>Days</th>
+                        <th>Reason</th>
+                        {# تم تعديل الشرط هنا ليسمح للمدير أيضاً برؤية عمود الحذف #}
+                        {% if current_user.role in ['Admin', 'Manager'] %}
+                            <th>Action</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mv in movements %}
+                    <tr>
+                        <td>{{ mv.engineer.full_name }}</td>
+                        <td>{{ mv.action }}</td>
+                        <td>{{ mv.movement_date.strftime('%Y-%m-%d') if mv.movement_date else '-' }}</td>
+                        <td>{{ mv.days_on_site or '-' }}</td>
+                        <td>{{ mv.reason or '-' }}</td>
+                        
+                        {# تم تعديل الشرط هنا ليسمح للمدير أيضاً بالقيام بالحذف #}
+                        {% if current_user.role in ['Admin', 'Manager'] %}
+                        <td>
+                            <a href="{{ url_for('main.delete_movement_from_report', id=mv.id) }}" 
+                               class="btn btn-danger btn-sm" 
+                               onclick="return confirm('Are you sure you want to delete this record?');">
+                               <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">No movements found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

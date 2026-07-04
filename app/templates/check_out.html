@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Check Out Engineer</h2>
+
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <h4>{{ engineer.full_name }}</h4>
+
+        <p>
+            <strong>Employee ID:</strong>
+            {{ engineer.employee_id }}
+        </p>
+
+        <p>
+            <strong>Current Days On Site:</strong>
+            {{ engineer.days_on_site }}
+        </p>
+
+        <form method="POST">
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Reason
+                </label>
+
+                <select
+                    name="reason"
+                    class="form-select"
+                    required>
+
+                    <option value="">Select...</option>
+
+                    <option>Rotation</option>
+
+                    <option>Leave</option>
+
+                    <option>Vacation</option>
+
+                    <option>Emergency</option>
+
+                    <option>Training</option>
+
+                    <option>Other</option>
+
+                </select>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+
+                    Notes
+
+                </label>
+
+                <textarea
+                    name="notes"
+                    rows="4"
+                    class="form-control"></textarea>
+
+            </div>
+
+            <button class="btn btn-danger">
+
+                Confirm Check Out
+
+            </button>
+
+            <a href="/engineers"
+               class="btn btn-secondary">
+
+                Cancel
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
