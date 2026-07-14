@@ -49,7 +49,21 @@ FieldAttendance/
 
 ## Screenshots
 
-> Screenshots will be added soon.
+### Login
+
+![Login](screenshots/login.png)
+
+### Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+### Engineers
+
+![Engineers](screenshots/engineers.png)
+
+### Reports
+
+![Reports](screenshots/reports.png)
 
 ---
 
